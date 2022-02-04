@@ -1,7 +1,12 @@
 package Threads;
 import java.text.ParseException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public interface CollectionUtils {
 	// add a static method to return populated map of students
@@ -22,6 +27,25 @@ public interface CollectionUtils {
 		map.put("dac-014", new Student("dac-014", "Raj", LocalDate.parse("1997-06-20"), Subject.REACT, 8.55));
 		map.put("dac-015", new Student("dac-015", "Pallavi", LocalDate.parse("1999-08-23"), Subject.WT, 8.39));
 		return map;
+	}
+	static List<Student> sortbydate(HashMap<String,Student> map){
+		List<Student> students = new ArrayList<Student>(map.values());
+		Comparator<Student> sortbydate = new Comparator<Student>(){
+
+			@Override
+			public int compare(Student o1, Student o2) {
+				// TODO Auto-generated method stub
+				return o1.getDob().compareTo(o2.getDob());
+			}
+		};
+		Collections.sort(students,sortbydate);
+		return students;
+	}
+	static List<Student> sortbygpa(HashMap<String,Student> map){
+		return map.values() // gets collection of values
+		.stream() // converts the collextion to the stream
+		.sorted(Comparator.comparing(Student::getGpa)) // sorts the stream based on the comparting crteria
+		.collect(Collectors.toList()); // gets the stream into a list and returns the list
 	}
 }
 
